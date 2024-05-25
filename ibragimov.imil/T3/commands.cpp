@@ -18,15 +18,15 @@ void ibragimov::getArea(const mapOfCommands& subcommands, const std::vector< Pol
   std::string input = "";
   in >> input;
   command command;
-  if (detail::isCorrectNumber(input))
+  try
+  {
+    command = getCommand(input, subcommands);
+  }
+  catch (const std::exception&)
   {
     using namespace std::placeholders;
     predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), std::stoull(input));
     command = std::bind(outputDouble, _2, std::bind(accumAreaIf, _1, predicate));
-  }
-  else
-  {
-    command = getCommand(input, subcommands);
   }
 
   command(values, out);
@@ -50,15 +50,15 @@ void ibragimov::count(const mapOfCommands& subcommands, const std::vector< Polyg
   std::string input = "";
   in >> input;
   command command;
-  if (detail::isCorrectNumber(input))
+  try
+  {
+    command = getCommand(input, subcommands);
+  }
+  catch (const std::exception&)
   {
     using namespace std::placeholders;
     predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), std::stoull(input));
     command = std::bind(outputULL, _2, std::bind(countIf, _1, predicate));
-  }
-  else
-  {
-    command = getCommand(input, subcommands);
   }
 
   command(values, out);
