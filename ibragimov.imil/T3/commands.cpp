@@ -25,7 +25,12 @@ void ibragimov::getArea(const mapOfCommands& subcommands, const std::vector< Pol
   catch (const std::exception&)
   {
     using namespace std::placeholders;
-    predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), std::stoull(input));
+    size_t numOfVertexes = std::stoull(input);
+    if (numOfVertexes < 3)
+    {
+      throw std::invalid_argument("Polygons with less than 3 points don't exist");
+    }
+    predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), numOfVertexes);
     command = std::bind(outputDouble, _2, std::bind(accumAreaIf, _1, predicate));
   }
 
@@ -56,8 +61,13 @@ void ibragimov::count(const mapOfCommands& subcommands, const std::vector< Polyg
   }
   catch (const std::exception&)
   {
+    size_t numOfVertexes = std::stoull(input);
+    if (numOfVertexes < 3)
+    {
+      throw std::invalid_argument("Polygons with less than 3 points don't exist");
+    }
     using namespace std::placeholders;
-    predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), std::stoull(input));
+    predicate predicate = std::bind(std::equal_to< size_t >{}, std::bind(getSize, _1), numOfVertexes);
     command = std::bind(outputULL, _2, std::bind(countIf, _1, predicate));
   }
 
